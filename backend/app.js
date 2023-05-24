@@ -1,6 +1,7 @@
 const express=require('express');
 const app=express();
-
+const schema=require('./helpers/schema');
+const {graphqlHTTP}=require('express-graphql');
 const bodyParser=require('body-parser');
 const morgan=require('morgan');
 const mongoose=require('mongoose');
@@ -27,7 +28,10 @@ app.use(`${api}/products`, productsRoutes);
 app.use(`${api}/users`, usersRoutes);
 app.use(`${api}/orders`, ordersRoutes);const Product=require('./models/product');
 
-
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: true, // Enable GraphiQL interface for testing
+  }));
 mongoose.connect(process.env.CONNECTION_STRING,{
     dbName:'eshop-database'
 
